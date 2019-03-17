@@ -13,8 +13,6 @@ filetype plugin indent on
 
 filetype on
 syntax on
-set shiftwidth=4
-set tabstop=4
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
@@ -68,6 +66,7 @@ set history=500
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
+autocmd FileType python setlocal tabstop=4
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -415,3 +414,4 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
