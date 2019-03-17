@@ -1,7 +1,11 @@
 # vimrc
 This is my vim configuration.
 ## Installation
-Clone this and copy the vimrc file to `~/.vimrc`. Then:
+Clone this and create a symlink `~/.vimrc` pointing to the `vimrc` file in this repo:
+```
+ln -s vimrc/vimrc ~/.vimrc
+```
+Then:
 ### Clone Vundle
 Run
 ```
