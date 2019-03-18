@@ -66,7 +66,6 @@ set history=500
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
-autocmd FileType python setlocal tabstop=4
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -206,15 +205,16 @@ set ffs=unix,dos,mac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-" set expandtab
+" Use tabs 
+set noexpandtab
 
 " Be smart when using tabs ;)
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=3
+set tabstop=3
+autocmd FileType python setlocal tabstop=3
 
 " Linebreak on 500 characters
 set lbr
