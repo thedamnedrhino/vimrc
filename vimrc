@@ -205,8 +205,6 @@ set ffs=unix,dos,mac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use tabs 
-set noexpandtab
 
 " Be smart when using tabs ;)
 set smarttab
@@ -215,6 +213,9 @@ set smarttab
 set shiftwidth=3
 set tabstop=3
 autocmd FileType python setlocal tabstop=3
+autocmd FileType python setlocal noexpandtab
+" Use tabs 
+set noexpandtab
 
 " Linebreak on 500 characters
 set lbr
