@@ -213,6 +213,7 @@ set smarttab
 set shiftwidth=3
 set tabstop=3
 autocmd FileType python setlocal tabstop=3
+autocmd FileType python setlocal shiftwidth=3
 autocmd FileType python setlocal noexpandtab
 " Use tabs 
 set noexpandtab
