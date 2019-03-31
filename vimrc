@@ -246,6 +246,15 @@ map <leader>z <C-Z>
 map <space> /
 map <c-space> ?
 
+" Map two spaces to switch to last buffer
+map <space><space> :b#<cr>
+" - Switch to specific buffer
+map <leader><space> :b<space>
+" Close buffer
+map <leader>c :Bclose<cr>
+" Quit vim
+map <leader>q :q<cr>
+
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
@@ -358,7 +367,7 @@ map <leader>s? z=
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
+" map <leader>q :e ~/buffer<cr>
 
 " Quickly open a markdown buffer for scribble
 map <leader>x :e ~/buffer.md<cr>
