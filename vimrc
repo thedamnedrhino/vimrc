@@ -241,6 +241,9 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Quick job pause
 map <leader>z <C-Z>
+" Save and pause/quit
+map <leader>ww :w<cr><C-Z>
+map <leader>wq :wq<cr>
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
