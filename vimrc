@@ -209,14 +209,15 @@ set ffs=unix,dos,mac
 " Be smart when using tabs ;)
 set smarttab
 
-" 1 tab == 4 spaces
-set shiftwidth=3
-set tabstop=3
-autocmd FileType python setlocal tabstop=3
-autocmd FileType python setlocal shiftwidth=3
-autocmd FileType python setlocal noexpandtab
 " Use tabs 
-set noexpandtab
+set expandtab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+autocmd FileType python setlocal tabstop=4
+autocmd FileType python setlocal shiftwidth=4
+autocmd FileType python setlocal expandtab
 
 " Linebreak on 500 characters
 set lbr
@@ -275,7 +276,10 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 map <leader>ba :bufdo bd<cr>
 
 map <leader>a :bnext<cr>
+map <leader>j :bnext<cr>
 map <leader>f :bprevious<cr>
+map <leader>k :bprevious<cr>
+
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
