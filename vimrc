@@ -1,18 +1,111 @@
+" Install Plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" ===========
+" | Plugins |
+" ===========
+call plug#begin()
+" Fuzzy search
+" Enable 'Ag' command: 'sudo apt-get install siversearch'
+" Enable 'Rg' command: 'snap install ripgrep'
+" Install fd-find: cargo install fd-find
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Linter
+" Plug 'dense-analysis/ale'
+
+" Syntax highlighting
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript', {'build': './install.sh'}
+
+" Color schemes
+Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'rakr/vim-one'
+Plug 'arzg/vim-colors-xcode'
+Plug 'lifepillar/vim-solarized8'
+Plug 'skbolton/embark'
+"Plug 'arcticicestudio/nord-vim'
+Plug 'nordtheme/vim'
+
+" Display status
+Plug 'bling/vim-airline'
+
+" Airline theme for status bar
+Plug 'vim-airline/vim-airline-themes'
+
+" Display buffer number in command bar
+Plug 'mihaifm/bufstop'
+
+" Visually sees indent
+" Plug 'Yggdroot/indentLine'
+
+" Csv extension
+Plug 'chrisbra/csv.vim'
+
+" Git extension
+Plug 'tpope/vim-fugitive'
+
+" Markdown Preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'turbio/bracey.vim', {'do': 'npm install --prefix server'}
+
+" Intellisense
+" Need to install nodejs, npm (sudo apt install nodejs npm)
+" Requires most recent version of nvim
+" Run :checkhealth and check what's missing
+" Then do the following:
+" :CocInstall coc-pyright
+" :CocInstall coc-json
+" :CocInstall coc-tsserver
+" :CocInstall coc-sh
+" :CocInstall coc-lua
+" :CocCommand<CR> then python.setInterpreter, then set python.enableLinting to False
+" :CocConfig or :CocLocalConfig, place settings in JSON
+" See https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file#configuration-file-resolve
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Vim Wiki
+Plug 'vimwiki/vimwiki'
+
+" Vimspector (for debugging)
+" Plug 'puremourning/vimspector'
+
+" File explorer
+Plug 'lambdalisue/fern.vim', {'branch': 'main'}
+
+Plug 'liuchengxu/space-vim-theme'
+
+Plug 'easymotion/vim-easymotion'
+
+Plug 'github/copilot.vim'
+
+call plug#end()
+
+
 set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'liuchengxu/space-vim-theme'
-
-call vundle#end()
 filetype plugin indent on
 
-
-filetype on
 syntax on
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
+" delays and poor user experience
+set updatetime=300
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
+set signcolumn=yes
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
@@ -25,8 +118,8 @@ function! InsertTabWrapper()
         return "\<c-p>"
     endif
 endfunction
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+" inoremap <expr> <tab> InsertTabWrapper()
+" inoremap <s-tab> <c-n>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
@@ -171,13 +264,6 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    colorscheme space_vim_theme
-catch
-endtry
-
-set background=light
-
 " Set extra options when running in GUI mode
 if has("gui_running")
     set guioptions-=T
@@ -263,22 +349,26 @@ map <leader>q :q<cr>
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
-" Smart way to move between windows
+" Smart way to move between windows (splits/panes)
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+
 " Close the current buffer
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader>bc :Bclose<cr>
 
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
 
-map <leader>a :bnext<cr>
-map <leader>j :bnext<cr>
-map <leader>f :bprevious<cr>
-map <leader>k :bprevious<cr>
+map <leader>j :bprevious<cr>
+"map <leader>l :bnext<cr>
+map <leader>k :bnext<cr>
+"map <leader>h :bprevious<cr>
+" for splits again: add these similar to move buffer maps for a smoooth experience
+map <leader>l <C-W>l
+map <leader>h <C-W>h
 
 
 " Useful mappings for managing tabs
@@ -286,7 +376,7 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+map <leader>t<leader> :tabnext<cr>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -303,7 +393,7 @@ map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers 
 try
-  set switchbuf=useopen,usetab,newtab
+  set switchbuf=useopen,usetab
   set stal=2
 catch
 endtry
@@ -353,19 +443,6 @@ endfun
 if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
-
-" Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -436,4 +513,124 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+let g:coc_node_path = '/usr/local/bin/node'
+
+" Airline theme
+
+" remove last column of airline (bottom bar) with num. trailing spaces etc.
+let g:airline_extensions=['tabline']
+let g:airline#extensions#tabline#enabled = 1  " Show buffers in tabs
+let g:airline_theme='deus'
+
+" Coc Intellisense
+nmap gd <Plug>(coc-definition)
+nmap gr <Plug>(coc-references)
+let g:coc_disable_startup_warning = 1
+
+nmap <leader>e :e 
+nnoremap <leader>f :Fern . -drawer -width=25<CR>
+" keep quickfix list (find results) open when selecting a file
+" autocmd FileType qf nnoremap <buffer> <CR> <CR>:copen<CR>
+"  search in files
+nnoremap <leader>ss :vim  **/*.py<Left><Left><Left><Left><Left><Left><Left><Left>
+" open quickfix list, ie. search results
+nnoremap <leader>cc :copen<CR>
+" cycle between search results
+nnoremap <leader>cn :cnext<CR>
+nnoremap <leader>cp :cprevious<CR>
+
+" quick reload vimrc
+nnoremap <leader>src :source $MYVIMRC<CR>
+nnoremap <leader>erc :e $MYVIMRC<CR>
+
+" fix option-b key. must add one entry for each combination
+execute "set <M-b>=\<Esc>b"
+" fix option-w key
+execute "set <M-w>=\<Esc>w"
+
+" jump one word in command mode
+" cnoremap <M-b> <S-Left>
+" above doesn't work. below does the same thing
+cnoremap ∫ <S-Left>
+cnoremap <C-I> <S-Left>
+"cnoremap <M-w> <S-Right>
+" above doesn't work. below does the same thing
+cnoremap ∑ <S-Right>
+cnoremap <C-O> <S-Right>
+
+" For auto complete
+" For vim: Ctrl Space, Ctrl `
+" inoremap <NUL> <C-n>
+" For nvim: Ctrl Space, Ctrl `
+" inoremap <C-Space> <C-n>
+" inoremap <C-n> <Nop>
+
+" For fuzzy search
+" nnoremap <C-p>. :FZF<Space>/opt/ff/<CR>
+nnoremap <C-p> :FZF<Space>.<CR>
+nnoremap ff :FZF<Space>
+
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <C-Space>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Copilot setup
+" imap <silent><script><expr> <C-L> copilot#Accept("")
+" let g:copilot_no_tab_map = v:true
+
+" debugging statement in python
+inoremap ffjj print("FARZAD++++++++++++++++++++++++++++++++++++++++++++++++")
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+cunmap <TAB>
+
+" run :VimspectorInstall to install these gadgets
+" let g:vimspector_install_gadgets = ['debugpy']
+
+
+" vimspector mappings
+" "d" stands for debugger
+" step
+" nmap <leader>ds <Plug>VimspectorStepInto
+" nmap <leader>do <Plug>VimspectorStepOver
+" nmap <leader>dc <Plug>VimspectorContinue
+" nmap <leader>dp <Plug>VimspectorPause
+" nmap <leader>dS <Plug>VimspectorStop
+" nmap <leader>dC <Plug>VimspectorRunToCursor
+" nmap <leader>dO <Plug>VimspectorStepOut	
+" " for normal mode - the word under the cursor
+" nmap <Leader>di <Plug>VimspectorBalloonEval
+" " for visual mode, the visually selected text
+" xmap <Leader>di <Plug>VimspectorBalloonEval
+" 
+
+" fix highlight color of selected lines in visual model
+highlight Visual ctermbg=darkgrey guibg=#D3D3D3
+
+set t_Co=256
+try
+    colorscheme space_vim_theme
+catch
+endtry
+
+set background=dark
+
+" colorscheme gruvbox
+highlight CopilotSuggestion guifg=#7bbf30 ctermfg=114
 
